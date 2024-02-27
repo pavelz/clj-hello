@@ -1,0 +1,9 @@
+{:deps
+ {io.pedestal/pedestal.service {:mvn/version "0.5.7"}
+  io.pedestal/pedestal.route   {:mvn/version "0.5.7"}
+  io.pedestal/pedestal.jetty   {:mvn/version "0.5.7"}
+  org.slf4j/slf4j-simple       {:mvn/version "1.7.28"}
+  org.clojure/tools.namespace      {:mvn/version "1.4.4"}
+  honeysql/honeysql {:mvn/version "1.0.461"}}
+
+ :paths ["src"]}
