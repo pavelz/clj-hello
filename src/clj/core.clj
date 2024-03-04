@@ -21,17 +21,34 @@
   (println "hey")
 )
 
+(defn is_html [s] (re-matcher ".html$" s))
+
 (defn render-template [request name]
     (let [
         nm (get-in request [:params (keyword(str name))])
-        template (slurp (io/resource "template.html"))
-        rendered (sel/render template {:title "Welcome" :greeting "Hello" :name nm})]
+        template (slurp (io/resource nm))
+        rendered (if (re-find #".html$" nm)
+            (sel/render template {:title "Welcome" :greeting "Hello" :name "bob"})
+            (slurp (io/resource nm))
+            )]
     rendered
     ))
+;;; detect filetype and reflect that
+(defn content_type [request name]
+    (let [
+        nm (get-in request [:params (keyword(str name))])
+    type (if (re-find(#".html" nm))
+        "text/html"
+        "binary/image"
+        )
+    ]
+    type)
+    )
 
 (defn respond-hello [request]
   (foo2 "bom")
-  {:status 200 :body (render-template request "name")})
+  {:status 200 :body (render-template request "name") :headers {"Content-Type" (content_type request "name")}}
+  )
 
 (def routes
   (route/expand-routes
