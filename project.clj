@@ -13,6 +13,8 @@
                   [org.clojure/tools.namespace  "1.4.4"]
                   [clj-postgresql "0.7.0"]
                   [selmer         "1.12.31"]
+                  [org.clojure/tools.trace "0.7.9"]
+
                 ]
 
   :plugins [[cider/cider-nrepl "0.24.0"]]

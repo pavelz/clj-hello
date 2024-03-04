@@ -4,11 +4,13 @@
             [clj-postgresql.core :as pg]
             [selmer.parser :as sel]
             [clojure.java.io :as io]
+            [clojure.tools.trace :as tr]
             [clojure.java.jdbc :as jdbc])
 )
 
 (defn foo [[name lastname]]
   (println "hello" name)
+  (println "hello" lastname)
   )
 
 (defn foo2
@@ -18,14 +20,19 @@
   (println x "Hello, World!")
   (println "hey")
 )
-(defn render-template [name]
-    (let [template (slurp (io/resource "template.html"))
-        rendered (sel/render template {:title "Welcome" :greeting "Hello" :name name})]
+
+(defn ^:dynamic render-template [request name]
+    (let [
+        nm (get-in request [:params (keyword(str name))])
+        template (slurp (io/resource "template.html"))
+        rendered (sel/render template {:title "Welcome" :greeting "Hello" :name nm})]
     rendered
     ))
+
 (defn respond-hello [request]
   (foo2 "bom")
-  {:status 200 :body (render-template "World")})
+  (tr/dotrace [render-template] (render-template request "name"))
+  {:status 200 :body (render-template request "name")})
 
 (def routes
   (route/expand-routes
