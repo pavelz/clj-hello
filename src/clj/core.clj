@@ -21,7 +21,7 @@
   (println "hey")
 )
 
-(defn ^:dynamic render-template [request name]
+(defn render-template [request name]
     (let [
         nm (get-in request [:params (keyword(str name))])
         template (slurp (io/resource "template.html"))
@@ -31,7 +31,6 @@
 
 (defn respond-hello [request]
   (foo2 "bom")
-  (tr/dotrace [render-template] (render-template request "name"))
   {:status 200 :body (render-template request "name")})
 
 (def routes
