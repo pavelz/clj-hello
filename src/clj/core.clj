@@ -8,6 +8,15 @@
             [clojure.java.jdbc :as jdbc])
 )
 
+
+(defn slurp-bytes
+  "Slurp the bytes from a slurpable thing"
+  [x]
+  (with-open [in (clojure.java.io/input-stream x)
+              out (java.io.ByteArrayOutputStream.)]
+    (clojure.java.io/copy in out)
+    (.toByteArray out)))
+
 (defn foo [[name lastname]]
   (println "hello" name)
   (println "hello" lastname)
@@ -29,7 +38,7 @@
         template (slurp (io/resource nm))
         rendered (if (re-find #".html$" nm)
             (sel/render template {:title "Welcome" :greeting "Hello" :name "bob"})
-            (slurp (io/resource nm))
+            (slurp-bytes (io/resource nm))
             )]
     rendered
     ))
