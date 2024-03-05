@@ -33,11 +33,12 @@
             )]
     rendered
     ))
+
 ;;; detect filetype and reflect that
 (defn content_type [request name]
     (let [
         nm (get-in request [:params (keyword(str name))])
-    type (if (re-find(#".html" nm))
+    type (if (re-find #".html$" nm)
         "text/html"
         "binary/image"
         )
